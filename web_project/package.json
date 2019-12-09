@@ -1,5 +1,5 @@
 {
-  "name": "web_project",
+  "name": "19-2-oss",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "gmldbs <gmldbs3445@gmail.com>",
@@ -11,8 +11,12 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "firebase": "^7.5.0",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-gmaps": "^0.2.2",
+    "vue-router": "^3.0.1",
+    "vue2-google-maps": "^0.10.7",
+    "vuefire": "^2.2.0-alpha.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
