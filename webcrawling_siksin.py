@@ -46,11 +46,13 @@ def print_stock_price(name):
     r = requests.get(url)
     html = r.content
     soup = BeautifulSoup(html, 'html.parser')
-    print(soup)
-    found = soup.find_all("g-review-stars")
+    """print(soup)"""
+    found = soup.find_all("script")
     print(found)
-    star = soup.select('g-review-stars')
-    print(star)
+    """star = soup.select('score')"""
+    """
+    
+    print(star)"""
     #result.append(star.text.strip())
 
     #print(result)
