@@ -2,11 +2,10 @@
   <div>
     <h1>{{ msg }}</h1>
     <div>
-      <h2>Search and add a pin</h2>
       <label>
-        <gmap-autocomplete
+        <!--gmap-autocomplete
           @place_changed="setPlace">
-        </gmap-autocomplete>
+        </gmap-autocomplete-->
       </label>
       <v-select v-model="selectedSi" :options="sis" placeholder="찾을 시를 선택하세요" class="form-control">
       </v-select>
