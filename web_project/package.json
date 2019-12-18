@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "firebase": "^7.5.0",
+    "v-tooltip": "^2.0.2",
     "vue": "^2.5.2",
     "vue-gmaps": "^0.2.2",
     "vue-router": "^3.0.1",

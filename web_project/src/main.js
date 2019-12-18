@@ -7,7 +7,9 @@ import { firestorePlugin } from 'vuefire'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import VTooltip from 'v-tooltip'
 
+Vue.use(VTooltip)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyBWfBpAVmaw98fBmVWRVzdNumZXrEZ0qNM',
