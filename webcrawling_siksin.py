@@ -1,3 +1,4 @@
+
 import requests
 import urllib
 from bs4 import BeautifulSoup
@@ -12,8 +13,11 @@ def print_restaurant_name(name):
     html = r.content
     soup = BeautifulSoup(html, 'html.parser')
     """print(soup)"""
-    found = soup.find_all(class_='score')
-    print(found)
+    foundstore = soup.find_all(class_='store')
+    print(foundstore)
+    foundstar = soup.find_all(class_='score')
+    print(foundstar)
+
 
 name = '청년밥상'
 print_restaurant_name(name)
