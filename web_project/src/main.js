@@ -36,3 +36,21 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+var {PythonShell} = require('python-shell')
+var options = {
+    mode: 'text',
+    pythonPath: "C:\\Python27\\python.exe", //python path
+    pythonOptions: ['-u'],
+    scriptPath: ''    // 실행할 py 파일 path
+};
+
+const schedule = require('node-schedule');
+var j = schedule.scheduleJob('0 0 0 * * *', function(){ //초 분 시간
+    //console.log('자정마다 실행');
+    PythonShell.run("getData.py", options, function(err){
+        if(err) console.log('err msg : ', err);
+        console.log('finished');
+    })
+});
+
