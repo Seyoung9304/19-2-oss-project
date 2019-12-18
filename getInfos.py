@@ -27,9 +27,9 @@ def print_restaurant_name_siksin(name):
     r = requests.get(url)
     html = r.content
     soup = BeautifulSoup(html, 'html.parser')
-    foundstore = soup.find_all(class_='store')
+    foundstore = soup.find(class_='store')
     print(foundstore)
-    foundstar = soup.find_all(class_='score')
+    foundstar = soup.find(class_='score')
     print(foundstar)
 
 
@@ -49,8 +49,10 @@ if(rescode==200):
         for i in dict['PlaceThatDoATasteyFoodSt'][1]['row']:
             data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'], i['REFINE_WGS84_LOGT']])
             storename.append(i['RESTRT_NM'])
-        print(data)
-        print(storename)
+        for i in storename:
+            print_restaurant_name_siksin(i)
+        #print(data)
+        #print(storename)
         #frame = pandas.DataFrame(data)
         #frame.to_csv(r'C:\Users\wogus\PycharmProjects\untitled1\data.csv',header=False, index=False)
     except: #예외처리 : 오류 메시지출력
