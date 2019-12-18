@@ -67,6 +67,12 @@ if rescode == 200:
             data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'],
                          i['REFINE_WGS84_LOGT']])
             storename.append(i['RESTRT_NM'])
+            ref = db.reference(name+'/'+i['RESTRT_NM'])
+            ref.update({'storename': i['RESTRT_NM']})
+            ref.update({'telno': i['TASTFDPLC_TELNO']})
+            ref.update({'address': i['REFINE_ROADNM_ADDR']})
+            ref.update({'longitude': i['REFINE_WGS84_LOGT']})
+            ref.update({'latitude': i['REFINE_WGS84_LAT']})
         for i in storename:
             print("---------------------------------")
             print("Search for " + i + ":")
