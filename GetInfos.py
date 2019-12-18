@@ -34,8 +34,10 @@ def print_restaurant_name_google(name):
             print("Google score: " + j.select_one('.BTtC6e').text)
             driver.close()
             return j.select_one('.BTtC6e').text
+        return 0
     except:
         print("No data or error!")
+        return 0
 
 
 def print_restaurant_name_siksin(name):
@@ -48,8 +50,13 @@ def print_restaurant_name_siksin(name):
         print("식신 found: " + foundstore)
         foundstar = soup.find(class_='score').text
         print("식신 score: " + foundstar)
+        if name == foundstore:
+            return foundstar
+        else:
+            return 0 #찾은 결과가 없거나 실제 원하는 데이터가 아닐 경우
     except:
         print("No data or error!")
+        return 0
 
 
 # firebase 인증 및 초기화
@@ -79,10 +86,23 @@ for names in siname:
                 data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'],
                              i['REFINE_WGS84_LOGT']])
                 storename.append(i['RESTRT_NM'])
-                star1 = print_restaurant_name_google(i['RESTRT_NM'])
+
+                scores = []
+
+                scores.append(float(print_restaurant_name_google(i['RESTRT_NM'])))
+                scores.append(float(print_restaurant_name_siksin(i['RESTRT_NM'])))
+
+                sum = 0
+                nonzerocnt = 0
+                for k in scores:
+                    if k != 0:
+                        sum += k
+                        nonzerocnt += 1
+                avg = sum / nonzerocnt
+
                 doc_ref.document(i['RESTRT_NM']).set({
                     u'si': names,
-                    u'score': star1,
+                    u'score': avg,
                     u'storename': i['RESTRT_NM'],
                     u'telno': i['TASTFDPLC_TELNO'],
                     u'address': i['REFINE_ROADNM_ADDR'],
