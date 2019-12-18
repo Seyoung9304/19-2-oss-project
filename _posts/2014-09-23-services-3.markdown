@@ -1,8 +1,8 @@
 ---
 layout: default
-img: phones.png
+img: js.png
 category: Services
-title: Google Web Fonts and<br>Font Awesome Icons
+title: Back & Frontend<br>by JavaScript
 description: |
 ---
-This template features the 'Lato' font, part of the [Google Web Font library](http://www.google.com/fonts), as well as [icons from Font Awesome](http://fontawesome.io).
+데이터 시각화를 위한 프론트엔드로 Vue.js, 웹 서버를 위한 백엔드로 Node.js를 사용하였습니다.
