@@ -1,23 +1,21 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
-    <button class="tooltip" v-tooltip.top-center="msg">Hover me</button>
-    <div>
-    <div>
-    <p><span v-tooltip>{{ msg }}</span></p>
-    </div>
     <div>
       <h2>Search and add a pin</h2>
       <label>
         <gmap-autocomplete
           @place_changed="setPlace">
         </gmap-autocomplete>
-        <button @click="setMarker()">맛집 찾기!</button>
       </label>
+      <v-select v-model="selectedSi" :options="sis" placeholder="찾을 시를 선택하세요" class="form-control">
+      </v-select>
+       <v-btn @click="setMarker()">
+          검색
+        </v-btn>
       <br/>
-    </div>
     <br>
-    <gmap-map :center="center" :zoom="10" style="width:100%;  height: 600px;">
+    <gmap-map :center="center" :zoom="13" style="width:100%;  height: 600px;">
       <gmap-marker
         :key="index"
         v-for="(m, index) in markers"
@@ -44,6 +42,9 @@ import { db } from '../main'
 export default {
   data () {
     return {
+      selectedSi: '',
+      sis: ['가평군', '고양시', '과천시', '광주시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시',
+        '여주시', '연천군', '오산시', '용인시', '의왕시', '의정부시', '이천시', '평택시', '파주시', '포천시', '하남시', '화성시'],
       msg: '19-2-oss',
       data: [],
       center: { lat: 37.1728, lng: 127.032 },
@@ -51,20 +52,19 @@ export default {
       places: [],
       currentPlace: {lat: 37.1728, lng: 127.032},
       map: null,
-        infoContent: '',
-        infoWindowPos: {
-          lat: 0,
-          lng: 0
-        },
-        infoWinOpen: false,
-        currentMidx: null,
-        //optional: offset infowindow so it visually sits nicely on top of our marker
-        infoOptions: {
-          pixelOffset: {
-            width: 0,
-            height: -35
-          }
+      infoContent: '',
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
         }
+      }
     }
   },
   mounted: async function () {
@@ -82,8 +82,6 @@ export default {
     },
     addMarker () {
       if (this.currentPlace) {
-        console.log(this.currentPlace)
-        console.log(this.currentPlace.geometry.location.lat())
         const marker = {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
@@ -103,54 +101,50 @@ export default {
       })
     },
     setMarker () {
-      console.log(this.data.length)
+      this.markers = []
       for (var i = 0; i < this.data.length; i++) {
-        const marker = {
-          lat: parseFloat(this.data[i].latitude),
-          lng: parseFloat(this.data[i].longitude)
+        if (this.data[i].si === this.selectedSi) {
+          const marker = {
+            lat: parseFloat(this.data[i].latitude),
+            lng: parseFloat(this.data[i].longitude)
+          }
+          this.markers.push({
+            name: this.data[i].storename,
+            position: marker,
+            si: this.data[i].si,
+            telno: this.data[i].telno,
+            address: this.data[i].address,
+            star: this.data[i].star
+          })
+          this.center = marker
         }
-        this.markers.push({
-          name: this.data[i].storename, 
-          position: marker,
-          si: this.data[i].si,
-          telno: this.data[i].telno,
-          address: this.data[i].address,
-          star: this.data[i].star
-        })
-        //this.center = marker
       }
     },
     toggleInfoWindow: function (marker, idx) {
-        this.infoWindowPos = marker.position;
-        this.infoContent = this.getInfoWindowContent(marker);
-        
-
-        //check if its the same marker that was selected if yes toggle
-        if (this.currentMidx == idx) {
-          this.infoWinOpen = !this.infoWinOpen;
-        }
-        //if different marker set infowindow to open and reset current marker index
-        else {
-          this.infoWinOpen = true;
-          this.currentMidx = idx;
-        }
-      },
-
-      getInfoWindowContent: function (marker) {
-        return (`<div class="card">
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <p class="title is-4">${marker.name}</p>
-        <p class="title is-4">${marker.si}</p>
-        <p class="title is-4">${marker.telno}</p>
-        <p class="title is-4">${marker.address}</p>
-        <p v-if="market.star" class="title is-4">${marker.star}</p>
-      </div>
-    </div>
-  </div>
-</div>`);
+      this.infoWindowPos = marker.position
+      this.infoContent = this.getInfoWindowContent(marker)
+      if (this.currentMidx === idx) this.infoWinOpen = !this.infoWinOpen
+      else {
+        this.infoWinOpen = true
+        this.currentMidx = idx
       }
+    },
+
+    getInfoWindowContent: function (marker) {
+      return (`<div class="card">
+        <div class="card-content">
+        <div class="media">
+        <div class="media-content">
+        <p class="title is-4">음식점 이름 : ${marker.name}</p>
+        <p class="title is-4">시 : ${marker.si}</p>
+        <p class="title is-4">전화번호 : ${marker.telno}</p>
+        <p class="title is-4">주소 : ${marker.address}</p>
+        <p v-if="market.star" class="title is-4">점수 : ${marker.star}</p>
+        </div>
+        </div>
+        </div>
+        </div>`)
+    }
   }
 }
 </script>
