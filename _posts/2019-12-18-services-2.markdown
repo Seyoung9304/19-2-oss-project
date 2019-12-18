@@ -1,0 +1,8 @@
+---
+layout: default
+img: firebase.png
+category: Services
+title: Data Management<br>by Firebase
+description: |
+---
+  구글에서 제공하는 실시간 데이터베이스이자 백엔드 서비스, [Firebase](https://firebase.google.com/?gclid=Cj0KCQiAuefvBRDXARIsAFEOQ9EERvZ6dyGqw0-hkKgbj8O1DqcVnivBdukCIxcqC6ciY_BnLmYvSn4aAnl9EALw_wcB)를 활용하여 데이터를 저장하였습니다.
