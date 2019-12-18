@@ -3,19 +3,31 @@ import json
 import pandas
 import requests
 import urllib
+from urllib.parse import quote_plus
+from selenium import webdriver
 from bs4 import BeautifulSoup
 
 def print_restaurant_name_google(name):
     result = [[], []]
     #name = urllib.parse.quote(name)
-    url = 'https://www.google.co.kr/search?q='+name
+    baseurl = 'https://www.google.co.kr/search?q='
+    plusurl = name
+    url = baseurl + quote_plus(plusurl)
     print(url)
-    r = requests.get(url)
-    html = r.content
+
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    #print(soup)
-    star = soup.find_all(class_='BTtC6e')
-    print(star)
+
+    r = soup.select('.Ob2kfd')
+    # print(type(r))
+    for i in r:
+        print(i.select_one('.Aq14fc').text)
+        print()
+
+    driver.close()
 
 
 
@@ -42,7 +54,7 @@ rescode = response.getcode()
 data = []
 storename = []
 
-if(rescode==200):
+if rescode == 200:
     response_body = response.read()
     dict = json.loads(response_body.decode('utf-8'))
     try:
@@ -51,6 +63,7 @@ if(rescode==200):
             storename.append(i['RESTRT_NM'])
         for i in storename:
             print_restaurant_name_siksin(i)
+            print_restaurant_name_google(i)
         #print(data)
         #print(storename)
         #frame = pandas.DataFrame(data)
