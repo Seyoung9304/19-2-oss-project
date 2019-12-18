@@ -8,12 +8,10 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 def print_restaurant_name_google(name):
-    result = [[], []]
-    #name = urllib.parse.quote(name)
     baseurl = 'https://www.google.co.kr/search?q='
     plusurl = name
     url = baseurl + quote_plus(plusurl)
-    print(url)
+    #print(url)
 
     driver = webdriver.Chrome()
     driver.get(url)
@@ -21,13 +19,14 @@ def print_restaurant_name_google(name):
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
 
-    r = soup.select('.Ob2kfd')
-    # print(type(r))
-    for i in r:
-        print(i.select_one('.Aq14fc').text)
-        print()
-
-    driver.close()
+    try:
+        r = soup.select('.Ob2kfd')
+        # print(type(r))
+        for i in r:
+            print("Google score: "+i.select_one('.Aq14fc').text)
+        driver.close()
+    except:
+        print("No data or error!")
 
 
 
@@ -35,16 +34,29 @@ def print_restaurant_name_siksin(name):
     result = [[], []]
     #name = urllib.parse.quote(name)
     url = 'https://www.siksinhot.com/search?keywords='+name
-    print(url)
+    #print(url)
     r = requests.get(url)
     html = r.content
     soup = BeautifulSoup(html, 'html.parser')
-    foundstore = soup.find(class_='store')
-    print(foundstore)
-    foundstar = soup.find(class_='score')
-    print(foundstar)
 
+    foundstore = soup.find(class_='store').text
+    print("식신 found: "+foundstore)
+    foundstar = soup.find(class_='score').text
+    print("식신 score: "+foundstar)
 
+    """
+    foundstore = soup.select('.store')
+    for i in r:
+        print(i.select_one('.store'))
+    
+    try:
+        r = soup.select('.Ob2kfd')
+        # print(type(r))
+        for i in r:
+            print(i.select_one('.Aq14fc').text)
+    except:
+        print("No data or error!")
+    """
 
 name = urllib.parse.quote(input("경기도 시/군 명을 입력해주세요 : "))
 url = 'https://openapi.gg.go.kr/PlaceThatDoATasteyFoodSt?KEY=30c8bab88c6249babce184a75ce9be0f&Type=json&SIGUN_NM='+name
@@ -62,6 +74,8 @@ if rescode == 200:
             data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'], i['REFINE_WGS84_LOGT']])
             storename.append(i['RESTRT_NM'])
         for i in storename:
+            print("---------------------------------")
+            print("Search for "+i+":")
             print_restaurant_name_siksin(i)
             print_restaurant_name_google(i)
         #print(data)
