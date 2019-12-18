@@ -15,8 +15,9 @@ if(rescode==200):
     try:
         for i in dict['PlaceThatDoATasteyFoodSt'][1]['row']:
             data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'], i['REFINE_WGS84_LOGT']])
-        frame = pandas.DataFrame(data)
-        frame.to_csv(r'C:\Users\wogus\PycharmProjects\untitled1\data.csv',header=False, index=False)
+        print(data)
+        #frame = pandas.DataFrame(data)
+        #frame.to_csv(r'C:\Users\wogus\PycharmProjects\untitled1\data.csv',header=False, index=False)
     except: #예외처리 : 오류 메시지출력
         print(dict['RESULT']['MESSAGE'])
 else:
