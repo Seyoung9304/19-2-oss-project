@@ -1,0 +1,8 @@
+---
+layout: default
+img: python.PNG
+category: Services
+title: Web Crawling<br>by Python
+description: |
+---
+오픈 API인 [경기데이터드림](https://data.gg.go.kr)의 데이터로 맛집 정보를 가져오고, 이를 기반으로 Python을 통해 웹사이트에서 크롤링하였습니다.

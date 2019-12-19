@@ -1,0 +1,8 @@
+---
+layout: default
+img: js.png
+category: Services
+title: Back & Frontend<br>by JavaScript
+description: |
+---
+데이터 시각화를 위한 프론트엔드로 Vue.js, 웹 서버를 위한 백엔드로 Node.js를 사용하였습니다.
