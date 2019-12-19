@@ -99,7 +99,6 @@ export default {
   methods: {
     find () {
       this.markers = []
-      if (this.inputData === '') return
       if (this.selectedSi === '') {
         for (var i = 0; i < this.data.length; i++) {
           if (this.data[i].storename.includes(this.inputData) || this.data[i].menu.includes(this.inputData)) {
