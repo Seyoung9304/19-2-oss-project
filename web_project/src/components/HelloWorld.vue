@@ -1,17 +1,29 @@
 <template>
   <div>
     <h1>{{ msg }}</h1>
+    <br>
+    <br>
     <div>
       <label>
-        <!--gmap-autocomplete
+        <div>
+        <gmap-autocomplete
           @place_changed="setPlace">
-        </gmap-autocomplete-->
+        </gmap-autocomplete>
+        <v-btn @click="addMarker()">
+          위치 찾기
+        </v-btn>
+      </div>
+      <br>
+      <br>
+      <br>
       </label>
+      <div>
       <v-select v-model="selectedSi" :options="sis" placeholder="찾을 시를 선택하세요" class="form-control">
       </v-select>
        <v-btn @click="setMarker()">
           검색
         </v-btn>
+      </div>
       <br/>
     <br>
     <gmap-map :center="center" :zoom="13" style="width:100%;  height: 600px;">
@@ -42,9 +54,9 @@ export default {
   data () {
     return {
       selectedSi: '',
-      sis: ['가평군', '고양시', '과천시', '광주시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시',
+      sis: ['전체', '가평군', '고양시', '과천시', '광주시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시',
         '여주시', '연천군', '오산시', '용인시', '의왕시', '의정부시', '이천시', '평택시', '파주시', '포천시', '하남시', '화성시'],
-      msg: '19-2-oss',
+      msg: '성균관대 No.1 경기도 맛집 찾기 서비스',
       data: [],
       center: { lat: 37.1728, lng: 127.032 },
       markers: [],
@@ -102,7 +114,7 @@ export default {
     setMarker () {
       this.markers = []
       for (var i = 0; i < this.data.length; i++) {
-        if (this.data[i].si === this.selectedSi) {
+        if (this.data[i].si === this.selectedSi || this.selectedSi === '전체') {
           const marker = {
             lat: parseFloat(this.data[i].latitude),
             lng: parseFloat(this.data[i].longitude)
