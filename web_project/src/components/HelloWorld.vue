@@ -113,7 +113,8 @@ export default {
             si: this.data[i].si,
             telno: this.data[i].telno,
             address: this.data[i].address,
-            star: this.data[i].star
+            star: this.data[i].score,
+            menu: this.data[i].menu
           })
           this.center = marker
         }
@@ -134,8 +135,8 @@ export default {
         <div class="card-content">
         <div class="media">
         <div class="media-content">
-        <p class="title is-4">음식점 이름 : ${marker.name}</p>
-        <p class="title is-4">시 : ${marker.si}</p>
+        <p class="title is-6">음식점 이름 : ${marker.name}</p>
+        <p class="title is-4">대표 메뉴 : ${marker.menu}</p>
         <p class="title is-4">전화번호 : ${marker.telno}</p>
         <p class="title is-4">주소 : ${marker.address}</p>
         <p v-if="market.star" class="title is-4">점수 : ${marker.star}</p>
