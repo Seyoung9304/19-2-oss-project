@@ -20,9 +20,9 @@
       <div>
       <v-select v-model="selectedSi" :options="sis" placeholder="찾을 시를 선택하세요" class="form-control">
       </v-select>
-       <v-btn @click="setMarker()">
-          검색
-        </v-btn>
+      </div>
+      <div>
+        <v-text-field v-model="inputData" placeholder="음식 이름이나 음식점이름을 입력해주세요."/>
       </div>
       <br/>
     <br>
@@ -53,6 +53,7 @@ import { db } from '../main'
 export default {
   data () {
     return {
+      inputData: '',
       selectedSi: '',
       sis: ['전체', '가평군', '고양시', '과천시', '광주시', '김포시', '남양주시', '동두천시', '부천시', '성남시', '수원시', '시흥시', '안산시', '안성시', '안양시', '양주시',
         '여주시', '연천군', '오산시', '용인시', '의왕시', '의정부시', '이천시', '평택시', '파주시', '포천시', '하남시', '화성시'],
@@ -87,7 +88,58 @@ export default {
       data: db.collection('data')
     }
   },
+  watch: {
+    inputData: function (newVal, oldVal) {
+      this.find()
+    },
+    selectedSi: function (newVal, oldVal) {
+      this.setMarker()
+    }
+  },
   methods: {
+    find () {
+      this.markers = []
+      if (this.inputData === '') return
+      if (this.selectedSi === '') {
+        for (var i = 0; i < this.data.length; i++) {
+          if (this.data[i].storename.includes(this.inputData) || this.data[i].menu.includes(this.inputData)) {
+            const marker = {
+              lat: parseFloat(this.data[i].latitude),
+              lng: parseFloat(this.data[i].longitude)
+            }
+            this.markers.push({
+              name: this.data[i].storename,
+              position: marker,
+              si: this.data[i].si,
+              telno: this.data[i].telno,
+              address: this.data[i].address,
+              star: this.data[i].score,
+              menu: this.data[i].menu
+            })
+            this.center = marker
+          }
+        }
+      } else {
+        for (i = 0; i < this.data.length; i++) {
+          if ((this.data[i].si === this.selectedSi || this.selectedSi === '전체') && (this.data[i].storename.includes(this.inputData) || this.data[i].menu.includes(this.inputData))) {
+            const marker = {
+              lat: parseFloat(this.data[i].latitude),
+              lng: parseFloat(this.data[i].longitude)
+            }
+            this.markers.push({
+              name: this.data[i].storename,
+              position: marker,
+              si: this.data[i].si,
+              telno: this.data[i].telno,
+              address: this.data[i].address,
+              star: this.data[i].score,
+              menu: this.data[i].menu
+            })
+            this.center = marker
+          }
+        }
+      }
+    },
     setPlace (place) {
       this.currentPlace = place
     },
@@ -113,22 +165,43 @@ export default {
     },
     setMarker () {
       this.markers = []
-      for (var i = 0; i < this.data.length; i++) {
-        if (this.data[i].si === this.selectedSi || this.selectedSi === '전체') {
-          const marker = {
-            lat: parseFloat(this.data[i].latitude),
-            lng: parseFloat(this.data[i].longitude)
+      if (this.inputData === '') {
+        for (var i = 0; i < this.data.length; i++) {
+          if (this.data[i].si === this.selectedSi || this.selectedSi === '전체') {
+            const marker = {
+              lat: parseFloat(this.data[i].latitude),
+              lng: parseFloat(this.data[i].longitude)
+            }
+            this.markers.push({
+              name: this.data[i].storename,
+              position: marker,
+              si: this.data[i].si,
+              telno: this.data[i].telno,
+              address: this.data[i].address,
+              star: this.data[i].score,
+              menu: this.data[i].menu
+            })
+            this.center = marker
           }
-          this.markers.push({
-            name: this.data[i].storename,
-            position: marker,
-            si: this.data[i].si,
-            telno: this.data[i].telno,
-            address: this.data[i].address,
-            star: this.data[i].score,
-            menu: this.data[i].menu
-          })
-          this.center = marker
+        }
+      } else {
+        for (i = 0; i < this.data.length; i++) {
+          if ((this.data[i].si === this.selectedSi || this.selectedSi === '전체') && (this.data[i].storename.includes(this.inputData) || this.data[i].menu.includes(this.inputData))) {
+            const marker = {
+              lat: parseFloat(this.data[i].latitude),
+              lng: parseFloat(this.data[i].longitude)
+            }
+            this.markers.push({
+              name: this.data[i].storename,
+              position: marker,
+              si: this.data[i].si,
+              telno: this.data[i].telno,
+              address: this.data[i].address,
+              star: this.data[i].score,
+              menu: this.data[i].menu
+            })
+            this.center = marker
+          }
         }
       }
     },
@@ -141,7 +214,6 @@ export default {
         this.currentMidx = idx
       }
     },
-
     getInfoWindowContent: function (marker) {
       return (`<div class="card">
         <div class="card-content">
