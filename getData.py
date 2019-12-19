@@ -84,7 +84,7 @@ for names in siname:
         try:
             for i in dict['PlaceThatDoATasteyFoodSt'][1]['row']:
                 data.append([i['RESTRT_NM'], i['TASTFDPLC_TELNO'], i['REFINE_ROADNM_ADDR'], i['REFINE_WGS84_LAT'],
-                             i['REFINE_WGS84_LOGT']])
+                             i['REFINE_WGS84_LOGT'], i['REPRSNT_FOOD_NM']])
                 storename.append(i['RESTRT_NM'])
 
                 scores = []
@@ -98,40 +98,20 @@ for names in siname:
                     if k != 0:
                         sum += k
                         nonzerocnt += 1
-                avg = sum / nonzerocnt
-
-                doc_ref.document(i['RESTRT_NM']).set({
-                    u'si': names,
-                    u'score': avg,
-                    u'storename': i['RESTRT_NM'],
-                    u'telno': i['TASTFDPLC_TELNO'],
-                    u'address': i['REFINE_ROADNM_ADDR'],
-                    u'longitude': i['REFINE_WGS84_LOGT'],
-                    u'latitude': i['REFINE_WGS84_LAT']
-                })
+                if nonzerocnt != 0:
+                    avg = sum / nonzerocnt
+                    doc_ref.document(i['RESTRT_NM']).set({
+                        u'si': names,
+                        u'score': avg,
+                        u'storename': i['RESTRT_NM'],
+                        u'telno': i['TASTFDPLC_TELNO'],
+                        u'address': i['REFINE_ROADNM_ADDR'],
+                        u'longitude': i['REFINE_WGS84_LOGT'],
+                        u'latitude': i['REFINE_WGS84_LAT'],
+                        u'menu': i['REPRSNT_FOOD_NM']
+                    })
                 # 맛집 기본정보 업데이트
-            """
-            for i in storename:
-                print("---------------------------------")
-                print("Search for " + i + ":")
-                # print_restaurant_name_siksin(i)
-                # print_restaurant_name_google(i)
-            """
         except:
             print(dict['RESULT']['MESSAGE'])
     else:
         print("Error Code:" + rescode)
-
-"""
-    const
-    firebaseConfig = {
-        apiKey: "AIzaSyBp9qZ87OMBpMgsql2Ty4bYY9HlyHOmPk0",
-        authDomain: "oss-d85b6.firebaseapp.com",
-        databaseURL: "https://oss-d85b6.firebaseio.com",
-        projectId: "oss-d85b6",
-        storageBucket: "oss-d85b6.appspot.com",
-        messagingSenderId: "177361667729",
-        appId: "1:177361667729:web:d51c9f369f1afed5eb6130",
-        measurementId: "G-5BGT9PMBCZ"
-    };
-"""
